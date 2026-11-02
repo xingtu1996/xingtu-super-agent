@@ -41,3 +41,12 @@ gh repo create xingtu1996/xingtu-fde --public --description "XingTu FDE — Open
 日期 / 发起者与执行 Agent / 原始问题与修改提示词（若可公开，仅脱敏摘要） / 读取来源及 revision 类型 / 决策与被拒方案 / GitHub Commit SHA / PR URL / 测试环境与命令 / 通过失败与日志摘要 / 风险审批 / 回滚路径 / 内容创作线索。
 
 内容选题方向：从单仓 Super Agent 到 FDE 的专业知识治理；“证据卡能替代故事吗”；FDE 业务验收为何先于 Agent 编排；第三方案例如何正确归因。均为选题线索，尚非已发布稿。
+
+## 本轮 GitHub 回执及静态验收（实际结果）
+
+- 暂存分支：`bootstrap/xingtu-fde-20261102`（基于 XSA main `d0bcf54416b8c454c140e1d11efd104a075a5ef4`）。
+- 首批文档提交：[`e09121d1014d98575efaef7fb4092882afff1c25`](https://github.com/xingtu1996/xingtu-super-agent/commit/e09121d1014d98575efaef7fb4092882afff1c25)。
+- 临时审核入口：[XSA Draft PR #3](https://github.com/xingtu1996/xingtu-super-agent/pull/3)；**不可合并到 XSA main**。
+- 现场静态检查：通过 GitHub 远端重新读取 18 个变更文件，27 个相对 Markdown 文件链接均指向本启动包内存在的文件；基本凭据模式扫描未发现命中。此检查不涵盖外部 URL 存活、Mermaid 渲染、语义正确性、完整许可证审计或全面的隐私审查。
+- 未进行：源码执行测试、实际案例验收、DSH / Feishu 接入测试、README 渲染检查。任何人不得将“静态检查通过”扩展表述成“生产验收通过”。
+- 本条账本的补录提交以本文件最新 Git 历史为准（记录自身无法预知自身的最终 commit SHA）。
