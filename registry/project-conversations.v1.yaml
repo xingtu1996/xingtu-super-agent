@@ -1,0 +1,57 @@
+# XSA 公开会话项目索引（设计数据，不会自动创建 ChatGPT 会话）
+# private_repo 名称和实际平台 conversation_id 不记录在公开仓。
+schema: xsa.project-conversations.v1
+updated_on: "2026-11-02"
+status: proposed
+conventions:
+  format: "<code> (<chat|work>)｜<label>"
+  chat: "long-lived project reasoning and review"
+  work: "task-bound execution; start as needed"
+  binding_source: "task contract + primary_repo, not title alone"
+  approval: "human for sensitive / irreversible changes"
+projects:
+  - code: XSA
+    primary_repo: xingtu1996/xingtu-super-agent
+    chat_label: "XSA (chat)｜Super Agent 工程总控"
+    work_label_example: "XSA (work)｜Super Agent 工程实施"
+    roles: [architecture, coordination, engineering]
+    model_policy: "docs/governance/MODEL_ROUTING_POLICY_V1.md"
+  - code: XF
+    primary_repo: xingtu1996/xingtu-fde
+    chat_label: "XF (chat)｜FDE 知识与工程实践"
+    work_label_example: "XF (work)｜FDE 工程建设"
+    roles: [research, cases, skills, implementation]
+  - code: XE
+    primary_repo: xingtu1996/xingtu-ai-engineering
+    chat_label: "XE (chat)｜AI 工程化方法"
+    work_label_example: "XE (work)｜工程质量验证"
+    roles: [engineering, quality, standards]
+  - code: XH
+    primary_repo: xingtu1996/xingtu-harness
+    related_public_repos: [xingtu1996/xingtu-hooks, xingtu1996/xingtu-cli, xingtu1996/xingtu-mcps, xingtu1996/xingtu-sdd]
+    chat_label: "XH (chat)｜Harness 与工具治理"
+    work_label_example: "XH (work)｜插件联调"
+    roles: [tooling, integration]
+  - code: XS
+    primary_repo: xingtu1996/xingtu-skills
+    related_public_repos: [xingtu1996/dsh-xingtu-skills]
+    chat_label: "XS (chat)｜Skills 能力与回归"
+    work_label_example: "XS (work)｜Skill 测试"
+    roles: [skills, regression]
+  - code: XL
+    primary_repo: xingtu1996/xingtu-learn
+    chat_label: "XL (chat)｜研究与学习"
+    work_label_example: "XL (work)｜实验实施"
+    roles: [learning, evidence]
+  - code: XO
+    primary_repo: xingtu1996/xingtu-scheduled
+    related_public_repos: [xingtu1996/xingtu-workflows]
+    chat_label: "XO (chat)｜调度与健康治理"
+    work_label_example: "XO (work)｜定时任务验证"
+    roles: [automation, monitoring]
+  - code: XC
+    primary_repo: xingtu1996/xingtu-articles
+    chat_label: "XC (chat)｜内容与运营策略"
+    work_label_example: "XC (work)｜公开内容归档"
+    roles: [content, publishing]
+    note: "Private drafts and production repositories are bound per task privately; not disclosed in public registry."
