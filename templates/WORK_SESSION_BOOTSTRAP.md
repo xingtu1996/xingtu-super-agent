@@ -11,7 +11,7 @@
 - Coordination repository（可选）：`xingtu1996/xingtu-super-agent`
 - Task goal: `<要解决的问题>`
 - Output: 独立分支 + Draft PR + 验收回执
-- Recommended model / effort: **Plus 默认 GPT-6 Luna / Medium**（专业 Chat 默认 GPT-6 / Medium）；Pro 或高额度任务可按复杂度升级。详见 [XSA Model Routing Policy](../docs/governance/MODEL_ROUTING_POLICY_V1.md)。运行前须在实际 UI 选择并在日志记录，不是自动路由。
+- Recommended model / effort: **Plus Work/Codex 默认 GPT-6 Luna / Medium**（专业 Chat 在 2026 年 11 月默认 GPT-6 / High；12 月额度规则切换后人工复核）；综合能力不足时试用 GPT-6.1 Terra / Medium 或将 GPT-5.6 Terra / Medium 用作同任务对照，不认为旧版本天然节省额度。Pro 或高额度任务可按复杂度升级。详见 [XSA Model Routing Policy](../docs/governance/MODEL_ROUTING_POLICY_V1.md)。运行前须在实际 UI 选择并在日志记录，不是自动路由。
 - Mode: Work（执行）或 External-Agent（Muse/Codex），根据实际选择。
 
 ## 任务内容
