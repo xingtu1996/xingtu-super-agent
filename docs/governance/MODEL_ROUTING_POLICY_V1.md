@@ -1,4 +1,4 @@
-# XSA Model & Agent Routing Policy v1.0
+# XSA Model & Agent Routing Policy v1.1
 
 > 2026-11-02 · **建议配置 / 不是实际路由部署**。本文件面向人类和专业 Agent 提供模型选型依据；`AGENTS.md`、YAML、Prompt 不会自动切换 ChatGPT Work 或 Codex 的模型。  
 > 外部参考：[OpenAI Work & Codex](https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex)、[usage/effort](https://help.openai.com/en/articles/20001516-managing-usage-with-gpt-6-astra-in-work-and-codex)。各账户可用模型以 UI 和当前订阅为准。
@@ -12,21 +12,23 @@
 - **Work 和 Codex 使用相应的共享使用额度**；消耗取决于模型、任务规模、推理强度、执行步骤及 Fast 模式。不要宣称固定“多少条消息”或 Chat 永远零成本。核对 Settings → Usage。
 - 质量优先且有证据：每次比较合格产物的成本，而不是单纯 Token 下降百分比。
 
-## 2. 默认选择矩阵（若 UI 提供）
+## 2. 默认模型策略：Plus 轻量统一，Pro 按需升级（需界面实际支持）
 
-| 场景 | 首选 | 初始 effort | 什么时候升级/降级 |
-|---|---|---|---|
-| Chat 架构/战略/任务裁决 | ChatGPT GPT-6 | Medium；重大方案用 High | 简单讨论/归档用 Instant；只在证据充分且确实困难时增加 |
-| XSA Work：新协议、授权、跨仓联调 | GPT-6.1 Sol | High（首次复杂任务）；后续 Medium | 重大难题/反复失败考虑 Astra Low/Medium（若可用且额度允许） |
-| XF Work：FDE 知识仓初始化、跨仓研究 | GPT-6.1 Sol | 首次 High，稳定后 Medium | 资料收集/初稿交给 Terra Medium |
-| Harness/SDD/CLI：工程实现及验证 | GPT-6.1 Sol | Medium；复杂联调 High | 一般格式/修补可选 Terra Medium |
-| Skills 开发/回归 | GPT-6.1 Terra 或 Sol | Medium | 回归不稳定/安全缺陷 Sol High |
-| Learn：摘要/索引/来源整理 | GPT-6.1 Terra | Low/Medium | 新理论与对抗分析用 Sol Medium |
-| 内容/文章/视频的结构化整理 | GPT-6.1 Terra | Medium | 复杂选题取舍/证据冲突 Sol Medium/High |
-| 定时/重复/分类任务 | 可用的 Luna 或轻量模型 | Low | 出现错误或需跨仓判断时升 Sol Medium |
-| 安全边界/跨 Agent 故障纠偏 | GPT-6.1 Sol | High | 若 Astra 可用，可用 Low/Medium 作独立复核，仍需人工审批 |
+**2026-11-02 用户裁决**：Plus 套餐重视「经久耐用」，所有专业 Work / Codex 统一优先 **GPT-6 Luna + Medium（中）**，不因项目属于 XSA、XF、Harness 或 Skills 就自动升到 Sol / Terra / Astra；专业 Chat 优先 **GPT-6 + Medium**。这是推荐而非系统配置，尚无实际模型成本 A/B 结果。
 
-**重要**：用户 2026-11-02 的 Work 截图确实显示 **GPT-6.1 Sol「高」**，只能证实那一次界面选择，不能推断其他会话能自动调用同一模型。若对应模型未开放，用 UI 实际可选的较新 Sol/Terra 模型替代；不要编造 model ID 或修改未验证的 Codex `config.toml`。
+| 任务场景 | 默认选择 | 例外与升级 |
+|---|---|---|
+| 专业 Chat：讨论、审核、架构裁决 | GPT-6 · Medium | 多仓复杂争议且证据充分时临时 High |
+| 所有专业 Work / Codex：常规开发、文档、GitHub 操作、Skills、研究整理 | **GPT-6 Luna · Medium** | 已具备清晰任务契约、测试和权限时保持默认 |
+| 短小重复任务 | Luna · Low（若 UI 提供） | 输出质量不达标再回 Medium |
+| 难以解决的代码故障、跨仓架构、安全与关键评审 | 首先改善输入/证据/测试；其次 Luna · High（若 UI 提供） | 需要更强能力再临时选 Sol · Medium/High、Astra · Low/Medium（须账户可用且额度允许） |
+| Pro / 高额度套餐 | 可以继续 Luna · Medium，或按任务直接用 Sol · Medium | Astra 留给高难度任务；Pro 不等于无限用量 |
+
+**默认不切模型、不切思考强度**：Luna Medium 贯穿日常；只遇到清晰的复杂度或失败信号才升级。若账号/工作区没有 Luna 或没有其 Medium 选项，以实际模型选择器为准，记录替代选项，禁止假装已启用。
+
+官方用量指导说明：不同模型、思考强度、任务规模、Fast 模式影响 Work/Codex 共享额度；**Medium 是折中，High 可能更贵且不一定更好**。Plus 官方所列 Luna 与 Sol 本地消息范围是估计，不是保证用量或可无限发送的承诺。[官方 Work/Codex](https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex) · [用量与推理](https://help.openai.com/en/articles/20001516-managing-usage-with-gpt-6-astra-in-work-and-codex)。
+
+**历史实例不是新默认**：2026-11-02 的 XF Work 截图/日志显示一次 GPT-6.1 Sol · High，证明的是历史实测，不代表以后统一路由策略。已运行的任务不因本政策更改而被追溯标记为 Luna。
 
 ## 3. 任务角色与责任
 
@@ -48,11 +50,11 @@
 task_id: "user-or-task-registry-issued"
 project: XSA
 experience: work            # chat | work | codex | muse | dsh
-model_recommended: "GPT-6.1 Sol"
+model_recommended: "GPT-6 Luna"
 model_actual: "verified-from-ui-or-log-or-unknown"
 reasoning_recommended: medium
-reasoning_actual: "high-or-medium-or-unknown"
-why_selected: "cross-repo design and validation"
+reasoning_actual: "medium-or-high-or-unknown"
+why_selected: "Plus default: durability / quality balance"
 agents_real: []              # only actually instantiated workers
 usage_source: "Settings->Usage / platform-log / unknown"
 usage_actual: unknown
