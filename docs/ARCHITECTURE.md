@@ -55,6 +55,27 @@ flowchart LR
 
 `queued -> leased -> succeeded | failed | approval_required`；`leased -> expired` 只表示需要调查，不得立即双跑；重试必须先回收旧租约、核查副作用并受重试预算约束。状态转换不是授权：发布、合并、删除等动作永远需要单独的人工批准。
 
+## Coordination Guard（协作冲突守卫）
+
+> 状态：`design`，2026-11-02 补充。源于同日真实并发：本仓建成一小时内出现 4 个来自不同 Agent 的 Draft PR（见 `docs/history/narratives/2026-11-02-case-002-concurrent-agents.md`）。当多个 Agent 都有执行能力时，问题从「谁能做」变成「谁应该做、谁有权改、冲突怎么办」。
+
+Coordination Guard 是控制平面的守卫组件，职责不是检测 Git 文本冲突，而是治理任务级并发：
+
+| 机制 | 职责 |
+|---|---|
+| Ownership | 每个 Task 只有一个主执行者，并登记其工作分支与文件范围；其他 Agent 对该范围默认只读 |
+| Lease | 执行者持有带期限的任务租约；续约靠心跳。租约过期只表示需要调查，不自动把任务交给第二个执行者 |
+| Conflict Detection | 写入前比对目标文件范围、基线 Commit SHA 与在途任务登记；发现重叠时暂停相关写入并保留证据，不强制覆盖 |
+| Idempotence | 每个操作带 operationId；响应丢失时以原 ID 重试确认结果，禁止因不确定而重复执行（借鉴 Orca 编排的 operationId 思路，待核验后落规） |
+| Receipt | 完成以 Commit SHA、产物与回执为准，不以 Agent 自述为准 |
+| Safe Recovery | Worker 超时或断开时先核查其分支与回执，再决定恢复、接管或回滚；不并行双跑同一任务 |
+
+第一版实现路径：独立分支 + 任务登记文件 + GitHub 条件更新 + 租约原型；可靠的多 Worker 互斥需要事务性状态存储，在此之前一律标 `design`，不得宣传为已实现。
+
+## 复用优先的研究对象
+
+XSA 优先复用成熟运行能力，只补真实缺口。当前研究队列（详细对照在研究 PR #1 中，结论待独立核验）：Orka 的 Gateway Adapter → 标准事件 → 持久 Inbox → Task → Worker → Outbox 链路与本项目的接力模型最接近，优先级最高；Orca 的多 Agent 编排（Run / Task / Dispatch / Decision Gates / operationId）用于借鉴编排与幂等；DeepSeek Harness 的插件体系用于借鉴运行时组合。三者不在同一层：编排、协调、运行时各取其长，不互相替代。
+
 ## 第一阶段不能承诺
 
 - 无法直接控制没有开放接口的 GPT / Muse / 豆包等聊天会话；用户已有订阅不等于可用的 API 额度。

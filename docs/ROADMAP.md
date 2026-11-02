@@ -13,6 +13,8 @@
 - 任务与回执的事务持久化、租约与崩溃恢复。
 - 首个只读 GitHub Adapter：读取 PR / 提交 / CI 状态生成 Trigger 与证据，不执行写操作。
 - Watchdog 接入真实产物新鲜度检查（文件日期、大小、回执引用）。
+- Coordination Guard 原型：任务所有权登记、文件范围声明、写入前冲突检测（见 ADR-003 与 `docs/ARCHITECTURE.md`）。
+- 复用评估：先试用 Orca 的编排能力（Run / Task / Dispatch / operationId）验证需求，再决定自研范围；深读 Orka 的 Gateway → Inbox → Task → Worker → Outbox 链路作为协调层参考。评估结论以实测为准，未验证前不写成已集成。
 
 ## v0.3 授权真实接力
 
