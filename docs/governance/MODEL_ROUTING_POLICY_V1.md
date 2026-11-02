@@ -1,4 +1,4 @@
-# XSA Model & Agent Routing Policy v1.1
+# XSA Model & Agent Routing Policy v1.2
 
 > 2026-11-02 · **建议配置 / 不是实际路由部署**。本文件面向人类和专业 Agent 提供模型选型依据；`AGENTS.md`、YAML、Prompt 不会自动切换 ChatGPT Work 或 Codex 的模型。  
 > 外部参考：[OpenAI Work & Codex](https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex)、[usage/effort](https://help.openai.com/en/articles/20001516-managing-usage-with-gpt-6-astra-in-work-and-codex)。各账户可用模型以 UI 和当前订阅为准。
@@ -14,15 +14,23 @@
 
 ## 2. 默认模型策略：Plus 轻量统一，Pro 按需升级（需界面实际支持）
 
-**2026-11-02 用户裁决**：Plus 套餐重视「经久耐用」，所有专业 Work / Codex 统一优先 **GPT-6 Luna + Medium（中）**，不因项目属于 XSA、XF、Harness 或 Skills 就自动升到 Sol / Terra / Astra；专业 Chat 优先 **GPT-6 + Medium**。这是推荐而非系统配置，尚无实际模型成本 A/B 结果。
+**2026-11-02 用户裁决**：Plus 套餐重视「经久耐用」，所有专业 Work / Codex 统一优先 **GPT-6 Luna + Medium（中）**，不因项目属于 XSA、XF、Harness 或 Skills 就自动升到 Sol / Terra / Astra；专业 Chat 在 2026 年 11 月优先 **GPT-6 + High**，12 月规则变化后按实际 Usage 手动调整。这是推荐而非系统配置，尚无实际模型成本 A/B 结果。
 
 | 任务场景 | 默认选择 | 例外与升级 |
 |---|---|---|
-| 专业 Chat：讨论、审核、架构裁决 | GPT-6 · Medium | 多仓复杂争议且证据充分时临时 High |
+| **专业 Chat：2026 年 11 月的研究、审核、架构裁决** | **GPT-6 · High** | 目前不占用单独的 Work/Codex 执行池，但仍可能有 Chat 自身限额；12 月以实际规则手动复核 |
 | 所有专业 Work / Codex：常规开发、文档、GitHub 操作、Skills、研究整理 | **GPT-6 Luna · Medium** | 已具备清晰任务契约、测试和权限时保持默认 |
 | 短小重复任务 | Luna · Low（若 UI 提供） | 输出质量不达标再回 Medium |
 | 难以解决的代码故障、跨仓架构、安全与关键评审 | 首先改善输入/证据/测试；其次 Luna · High（若 UI 提供） | 需要更强能力再临时选 Sol · Medium/High、Astra · Low/Medium（须账户可用且额度允许） |
 | Pro / 高额度套餐 | 可以继续 Luna · Medium，或按任务直接用 Sol · Medium | Astra 留给高难度任务；Pro 不等于无限用量 |
+
+**升级认知｜新版本 ≠ 必然更贵，旧版本 ≠ 必然更省额度。** 用户重视「好用、稳定、单个合格成果消耗低」，因此不能根据 GPT-5.6 / GPT-6 的版本号简单判断。官方 [Enterprise token-based rate card](https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing) 中，标准 Work/Codex 费率（输入/输出每百万 Token）为 GPT-6 Luna $0.10/$0.50、GPT-5.6 Luna $0.20/$1.20、GPT-6.1 Terra $1/$5、GPT-5.6 Terra $2/$12、GPT-6.1 Sol $2/$10、GPT-5.6 Sol $4/$20。**这属于 Enterprise 合同费率，不能拿来直接换算 Plus 的五小时/每周限额**，只说明「老型号就省」是错误推断。
+
+Plus 正式默认仍保留 **GPT-6 Luna · Medium**；需更强综合能力时优先尝试 **GPT-6.1 Terra · Medium**，也可以将 **GPT-5.6 Terra · Medium** 作为同任务 A/B 对照，不能假定 5.6 更省额度。GPT-5.6 Sol 是更强的旧系列选项，不属于廉价默认。模型优先级以**最终通过验收的成果成本**决定，而非单次消息/推理长度。所有候选以当前 UI 可选为准。
+
+**Chat 过渡期**：OpenAI [使用额度说明](https://help.openai.com/en/articles/20001625-understanding-chatgpt-and-codex-usage-limits) 表示 2026 年 **12 月起 Plus、Pro、Business 的 ChatGPT 与 Codex 额度合并**，Instant Chat 不消耗合并额度。11 月专业 Chat 优先 GPT-6 · High，直到用户届时**人工复核并决定调整**，不做自动降档，也不声称当前 Chat High 无任何独立限制。Work/Codex 始终独立按自身额度治理。
+
+**建议的轻量 A/B（仍未执行）**：FDE 来源归档（简单）、GitHub PR 差异审核（中等）、XSA 跨仓冲突裁决（困难）；固定输入、验收标准及权限，分别运行 Luna Medium、6.1 Terra Medium、5.6 Terra Medium（若可用），记录实际 Usage、时长、缺陷、返工次数与可接受结果。先少量测试，避免为省额度反而重复消耗。
 
 **默认不切模型、不切思考强度**：Luna Medium 贯穿日常；只遇到清晰的复杂度或失败信号才升级。若账号/工作区没有 Luna 或没有其 Medium 选项，以实际模型选择器为准，记录替代选项，禁止假装已启用。
 
