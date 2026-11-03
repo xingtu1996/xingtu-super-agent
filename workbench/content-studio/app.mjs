@@ -77,6 +77,7 @@ function renderArticles() {
   const articles = filteredArticles();
   target.replaceChildren();
   if (!articles.length) {
+    selected = null;
     target.append(el("div", "empty", "没有匹配的稿件。请更换筛选条件。"));
     return;
   }
