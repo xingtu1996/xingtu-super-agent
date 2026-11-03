@@ -25,3 +25,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 ## 自己组一个任务包
 
 按 `templates/task-event-receipt.schema.json` 的字段组装 Task（task_id、objective、kind、input_revision、owner、approval_required、state、created_at、updated_at），执行后按 Receipt 字段回收执（worker、status、output_ref、evidence_sha、error_code、completed_at）。适配器接入前先用 `templates/adapter-capability-declaration.md` 做能力声明。
+
+## WorkBuddy 适配样例（`workbuddy-receipt-example.jsonl`）
+
+基于一台 macOS 主机的真实只读盘点任务生成的脱敏回执，三行分别对应 Task / Event / Receipt。状态 `mock`：由人工触发、离线生成，非生产 Event Bridge 产出。配套文档 `docs/adapters/workbuddy-adapter.md` 解释 WorkBuddy 本地资产如何映射到 XSA 的 Goal / Trigger / Capability / Receipt。
