@@ -94,7 +94,7 @@ export function dashboardStats(manifest) {
   return {
     total: articles.length,
     blocked: articles.filter((article) => article.status === "blocked").length,
-    pendingApproval: articles.filter((article) => article.gates.human_release === "pending" && article.stage !== "idea").length,
+    pendingApproval: articles.filter((article) => article.gates.human_release === "pending" && article.status === "ready").length,
     packages: articles.filter((article) => ["package", "wechat_draft"].includes(article.stage)).length
   };
 }
