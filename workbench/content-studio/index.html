@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>XSA Content Studio｜行途内容创作工作台</title>
+  <meta name="description" content="行途 XSA 内容创作工作台离线原型：内容流水线、证据回执、人工发布门禁。" />
+  <style>
+    :root{--ink:#1a1a1a;--paper:#fff;--canvas:#f8f8f6;--muted:#7b7c7d;--line:#e8e8e5;--brand:#f2644f;--brand-soft:#fff1ed;--green:#18835a;--green-soft:#e9f6ef;--yellow:#a8731d;--yellow-soft:#fff6e7;--radius:18px;--shadow:0 14px 35px rgba(28,25,22,.045)}
+    *{box-sizing:border-box}
+    body{margin:0;font:14px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--canvas)}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid rgba(242,100,79,.35);outline-offset:2px}
+    a{color:inherit}
+    .shell{min-height:100vh;display:grid;grid-template-columns:236px minmax(0,1fr)}
+    .sidebar{background:#171717;color:#fff;padding:30px 21px;display:flex;flex-direction:column;gap:35px}
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+    .brand-mark{display:grid;place-items:center;width:37px;height:37px;background:var(--brand);font-size:18px;font-weight:900;border-radius:11px;color:#fff}
+    .brand-text strong{display:block;font-size:16px;letter-spacing:.5px}
+    .brand-text small{display:block;font-size:10px;color:#aaa;letter-spacing:1.1px}
+    .eyebrow{color:#858585;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase}
+    .nav-link{width:100%;border:0;background:transparent;color:#c6c6c6;text-align:left;border-radius:10px;padding:11px 13px;margin:3px 0;display:flex;align-items:center;gap:11px}
+    .nav-link.active{background:#30302f;color:white}
+    .nav-link .dot{width:7px;height:7px;border-radius:50%;background:var(--brand)}
+    .side-note{margin-top:auto;background:#242424;border:1px solid #373737;padding:16px;border-radius:14px;color:#cbcbcb;font-size:12px}
+    .side-note strong{display:block;color:#fff;margin-bottom:6px;font-size:13px}
+    .side-note .lock{color:#ffb2a6;font-weight:600}
+    .main{padding:32px clamp(20px,3vw,48px) 55px;max-width:1800px;width:100%;margin:auto}
+    .topline{display:flex;gap:15px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;margin-bottom:28px}
+    .kicker{display:flex;align-items:center;gap:8px;color:var(--brand);font-size:12px;font-weight:800;letter-spacing:1.5px;margin-bottom:6px}
+    h1{margin:0;font-size:clamp(24px,2.8vw,35px);letter-spacing:-.8px;line-height:1.28}
+    .sub{color:var(--muted);margin:9px 0 0;font-size:13px}
+    .top-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+    .tag{padding:5px 10px;border-radius:999px;background:#ededeb;color:#656565;font-size:11px;font-weight:700;white-space:nowrap}
+    .tag.demo{background:var(--brand-soft);color:#ae4636}
+    .btn{appearance:none;border-radius:11px;background:var(--paper);border:1px solid #ddd;padding:9px 14px;font-weight:700;font-size:12px;transition:.15s}
+    .btn:hover{border-color:var(--brand);color:#b94232}
+    .btn.primary{background:var(--ink);color:white;border-color:var(--ink)}
+    .btn.primary:hover{background:#383838;color:white}
+    .btn.brand{background:var(--brand);color:#fff;border-color:var(--brand)}
+    .btn.brand:hover{background:#d94e3a}
+    .file-input{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}
+    .notice{display:none;background:var(--brand-soft);border:1px solid #ffd5ca;border-radius:12px;color:#943b2f;margin-bottom:20px;padding:11px 15px}
+    .notice.visible{display:block}
+    .section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:25px 0 14px}
+    h2{font-size:17px;margin:0;letter-spacing:-.3px}
+    .section-heading span{color:var(--muted);font-size:12px}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+    .stat{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:19px 22px;box-shadow:var(--shadow)}
+    .stat small{color:var(--muted);font-size:12px}
+    .stat strong{display:block;font-size:31px;line-height:1.3;margin-top:7px;letter-spacing:-1px}
+    .stat .accent{color:var(--brand)}
+    .workspace{display:grid;grid-template-columns:minmax(340px,1fr) minmax(315px,.83fr);gap:16px;align-items:start}
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .panel-head{padding:22px 23px 13px;border-bottom:1px solid var(--line)}
+    .panel-head p{font-size:12px;color:var(--muted);margin:4px 0 0}
+    .toolbar{padding:15px 22px;display:flex;gap:10px;flex-wrap:wrap}
+    .search,.filter{border:1px solid var(--line);border-radius:10px;background:#fafaf9;color:var(--ink);padding:9px 11px;min-width:0}
+    .search{flex:1 1 180px}
+    .filter{flex:0 1 150px}
+    .article-list{display:grid;gap:0;padding:0 12px 12px}
+    .article{width:100%;background:white;border:1px solid transparent;border-bottom:1px solid var(--line);text-align:left;padding:17px 13px;display:flex;align-items:start;gap:14px;border-radius:11px}
+    .article:hover{background:#faf9f8}
+    .article.selected{background:#fff6f3;border-color:#ffd8cd}
+    .ordinal{width:30px;height:30px;flex:0 0 30px;background:#f2f1ee;border-radius:8px;display:grid;place-items:center;font-weight:800;color:#666;font-size:11px}
+    .article.selected .ordinal{background:var(--brand);color:white}
+    .article-body{min-width:0;flex:1}
+    .article-title{display:block;font-size:14px;font-weight:700;line-height:1.5}
+    .article-desc{display:block;font-size:12px;color:var(--muted);margin-top:5px;line-height:1.5}
+    .meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:11px;color:#8b8b8b;font-size:11px}
+    .pill{display:inline-block;font-size:10px;padding:3px 7px;border-radius:999px;font-weight:700;background:#f0f0ee;color:#6b6b6b;white-space:nowrap}
+    .pill.blocked{background:var(--brand-soft);color:#b24a3b}
+    .pill.working{background:var(--yellow-soft);color:var(--yellow)}
+    .pill.ready{background:var(--green-soft);color:var(--green)}
+    .pill.done{background:#eaf1fb;color:#456c9d}
+    .detail{padding:23px}
+    .detail-top{display:flex;justify-content:space-between;align-items:start;gap:8px}
+    .detail-id{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1px}
+    .detail h3{font-size:20px;line-height:1.43;letter-spacing:-.3px;margin:10px 0}
+    .detail-desc{font-size:13px;color:#666;margin:0 0 18px}
+    .next{background:#1e1e1e;color:white;padding:17px;border-radius:13px;margin:18px 0}
+    .next small{color:#ffab9e;font-weight:800;letter-spacing:.6px}
+    .next p{margin:7px 0 0;font-weight:600;font-size:13px}
+    .gate-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:18px 0 10px}
+    .gate-head strong{font-size:13px}
+    .gate-head span{color:var(--muted);font-size:11px}
+    .progress{height:6px;background:#f0efed;border-radius:99px;overflow:hidden}
+    .progress span{display:block;height:100%;background:var(--brand);transition:width .2s}
+    .gate-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0}
+    .gate{border:1px solid var(--line);border-radius:10px;padding:10px 11px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px}
+    .gate i{display:grid;place-items:center;font-size:11px;width:20px;height:20px;border-radius:50%;font-style:normal;background:#f1f0ee;color:#888;flex-shrink:0}
+    .gate.pass i{background:var(--green-soft);color:var(--green)}
+    .gate.fail i{background:var(--brand-soft);color:#c34836}
+    .gate.fail{border-color:#ffcfc5}
+    .result{font-size:12px;border-radius:10px;padding:11px 12px;background:var(--brand-soft);color:#a94433;margin:13px 0}
+    .result.good{background:var(--green-soft);color:var(--green)}
+    .receipt-title{font-size:13px;font-weight:800;margin:20px 0 9px}
+    .receipt-list{display:grid;gap:8px}
+    .receipt{padding:12px;border:1px solid var(--line);border-radius:10px}
+    .receipt strong{font-size:12px;display:block}
+    .receipt small{display:block;color:var(--muted);margin-top:3px;font-size:11px}
+    .receipt a{color:#b14838;font-size:11px;text-decoration:none;overflow-wrap:anywhere}
+    .detail-actions{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
+    .empty{padding:32px;text-align:center;color:var(--muted);font-size:13px}
+    .footer-note{padding:17px 0;font-size:11px;color:#929292}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:1150px){.shell{grid-template-columns:190px minmax(0,1fr)}.workspace{grid-template-columns:1fr}.detail{padding:20px}.sidebar{padding:25px 14px}}
+    @media(max-width:760px){.shell{display:block}.sidebar{padding:13px 18px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px}.brand-text small{display:none}.side-note,.sidebar nav,.sidebar .eyebrow{display:none}.main{padding:22px 15px 40px}.topline{margin-bottom:20px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{padding:16px}.stat strong{font-size:26px}.workspace{gap:13px}.gate-list{grid-template-columns:1fr 1fr}.panel-head{padding:18px}.toolbar{padding:13px}.article-list{padding:0 9px 9px}.detail{padding:17px}}
+    @media(max-width:390px){.gate-list{grid-template-columns:1fr}.top-actions{width:100%}.top-actions .btn{flex:1}.stat{padding:13px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="XSA Content Studio">
+      <span class="brand-mark">行</span>
+      <span class="brand-text"><strong>行途 XingTu</strong><small>CONTENT STUDIO</small></span>
+    </a>
+    <nav aria-label="工作台导航">
+      <div class="eyebrow">工作区 / Workspace</div>
+      <button class="nav-link active" type="button"><span class="dot"></span> 内容生产总览</button>
+      <div class="eyebrow" style="margin:27px 13px 10px">内容生命周期</div>
+      <div id="stage-nav"></div>
+    </nav>
+    <div class="side-note"><strong>控制权始终在你</strong><span class="lock">私人草稿 ≠ 对外发布</span><br>Agent 生成与审稿；证据、授权和发布决策由人验收。</div>
+  </aside>
+  <main class="main">
+    <header class="topline">
+      <div>
+        <div class="kicker"><span aria-hidden="true">━━</span> XSA · AGENT WORKBENCH</div>
+        <h1>内容创作控制台</h1>
+        <p class="sub">从选题到发布回执，把每篇文章的下一步变得清楚。</p>
+      </div>
+      <div class="top-actions">
+        <span id="mode-label" class="tag demo">MOCK · 离线演示</span>
+        <label class="btn" for="file-picker" tabindex="0">导入本地清单</label>
+        <input id="file-picker" class="file-input" type="file" accept=".json,application/json" aria-label="导入内容发布清单 JSON" />
+        <button id="reset-button" class="btn primary" type="button">重置演示</button>
+      </div>
+    </header>
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+    <div class="section-heading"><h2>今日工作</h2><span id="source-caption">来源：合成演示，不是实时平台数据</span></div>
+    <section class="stats" aria-label="工作概览">
+      <div class="stat"><small>在管稿件</small><strong id="stat-total">—</strong></div>
+      <div class="stat"><small>当前阻塞</small><strong class="accent" id="stat-blocked">—</strong></div>
+      <div class="stat"><small>等待人工决策</small><strong id="stat-approval">—</strong></div>
+      <div class="stat"><small>发布包 / 私人草稿</small><strong id="stat-packages">—</strong></div>
+    </section>
+    <div class="section-heading"><h2>内容流水线</h2><span>选择稿件，查看门禁、回执与接力任务</span></div>
+    <section class="workspace">
+      <div class="panel">
+        <div class="panel-head"><h2>全部稿件</h2><p>阶段可筛选；任何“已完成”都需要真实证据支持。</p></div>
+        <div class="toolbar">
+          <input id="search-input" class="search" type="search" placeholder="搜索标题 / 任务 ID" aria-label="搜索稿件" />
+          <select id="stage-filter" class="filter" aria-label="筛选内容阶段"></select>
+        </div>
+        <div id="article-list" class="article-list" role="list"></div>
+      </div>
+      <div class="panel">
+        <div id="detail" class="detail" aria-live="polite"><div class="empty">选择一篇稿件查看详情</div></div>
+      </div>
+    </section>
+    <p class="footer-note">XSA Content Studio v0.1 · Research Preview / mock。导入文件仅在当前浏览器会话内解析，不会上传到服务器；刷新后重置。工作台不调用微信发布 API、不执行真实 Agent 任务。</p>
+  </main>
+</div>
+<script type="module" src="./app.mjs"></script>
+</body>
+</html>

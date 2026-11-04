@@ -1,0 +1,32 @@
+name: Content Studio checks
+
+on:
+  pull_request:
+    paths:
+      - "workbench/content-studio/**"
+      - "tests/content-studio.test.mjs"
+      - ".github/workflows/content-studio.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  content-studio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: JavaScript syntax
+        run: |
+          node --check workbench/content-studio/model.mjs
+          node --check workbench/content-studio/demo.mjs
+          node --check workbench/content-studio/app.mjs
+          node --check tests/content-studio.test.mjs
+      - name: Protocol and gates tests
+        run: node --test tests/content-studio.test.mjs
