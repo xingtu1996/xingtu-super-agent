@@ -1,0 +1,18 @@
+[
+  {
+    "number": 1,
+    "title": "docs: improve readme",
+    "body": "",
+    "draft": false,
+    "html_url": "https://github.com/example/demo/pull/1",
+    "updated_at": "2026-11-03T00:00:00Z"
+  },
+  {
+    "number": 2,
+    "title": "生产部署配置",
+    "body": "",
+    "draft": true,
+    "html_url": "https://github.com/example/demo/pull/2",
+    "updated_at": "2026-11-03T00:00:00Z"
+  }
+]
